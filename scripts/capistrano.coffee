@@ -5,6 +5,7 @@
 #   "githubot": "0.4.x"
 #
 # Configuration:
+#   APP_ROOT_DIR
 #
 # Commands:
 #   hubot deploy to <stage> <command> - deploy using capistrano
@@ -15,6 +16,10 @@
 module.exports = (robot) ->
   spawn = require('child_process').spawn
   carrier = require('carrier')
+
+  if process.env.APP_ROOT_DIR?
+    console.log "You have to set APP_ROOT_DIR to env path!"
+    return
 
   _getDate = ->
     theDate = new Date
@@ -38,7 +43,7 @@ module.exports = (robot) ->
     channel_name = res.envelope.room || "anonymous" #このスクリプトを呼び出したSlackのChannel
     
     cap = spawn("bundle", ["exec", "cap", "#{stage}", "deploy#{command}"],{
-      cwd: "/home/hitochan/developer/kuma"
+      cwd: process.env.APP_ROOT_DIR
     })
     capOut = carrier.carry cap.stdout
     capErr = carrier.carry cap.stderr

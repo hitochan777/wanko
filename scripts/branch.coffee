@@ -10,7 +10,8 @@
 #   HUBOT_GITHUB_OWNER
 #
 # Commands:
-#   hubot branch [merge|delete] <repo_name>/<head> into <base> [with <tag>]- merge branches
+#   hubot branch merge <repo_name>/<head> into <base> [with <tag>]- merge branches
+#   hubot branch delete <repo_name>/<head> - delete branch
 #
 # Author:
 #   hitochant777
