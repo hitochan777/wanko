@@ -1,0 +1,6 @@
+node_modules
+.DS_Store*
+.hubot_history
+scripts/example.coffee
+bin/hubot
+bin/hubot.cmd

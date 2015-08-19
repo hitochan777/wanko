@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+npm install
+export PATH="node_modules/.bin:node_modules/hubot/node_modules/.bin:$PATH"
+export HUBOT_GITHUB_TOKEN="eb688d44bc00a32e55ea88a3f41d05e5597e6a83"
+export HUBOT_GITHUB_OWNER="hitochan777"
+export HUBOT_SLACK_TOKEN=xoxb-8814672868-dPBZ8aN6Cdz3XLTPQo47b7Ri
+export PORT=9999
+
+exec node_modules/.bin/hubot --name "wanko" "$@"

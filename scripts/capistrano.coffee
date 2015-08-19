@@ -1,0 +1,50 @@
+# Description:
+#   merge pull requests in a Github repository
+#
+# Dependencies:
+#   "githubot": "0.4.x"
+#
+# Configuration:
+#
+# Commands:
+#   hubot deploy to <stage> <command> - deploy using capistrano
+#
+# Author:
+#   hitochant777
+
+module.exports = (robot) ->
+  spawn = require('child_process').spawn
+  carrier = require('carrier')
+
+  _getDate = ->
+    theDate = new Date
+    yyyy = theDate.getFullYear()
+    mm = theDate.getMonth()+1 #January is 0!
+    if mm < 10
+      mm = "0" + mm
+    dd = theDate.getDate()
+    if dd < 10
+      dd = "0" + dd
+    yyyy + "." + mm + "." + dd
+          
+  robot.respond /deploy to ([-_\.0-9a-zA-Z]+)\s*([-_\.0-9a-zA-Z]+)?$/i, (res)->
+    stage = res.match[1]
+    command = res.match[2] || ""
+    if command != ""
+      command = ":"+command
+    res.send command+"hogege"
+
+    account_name = res.envelope.user.name || "anonymous" #このスクリプトを呼び出した人のSlackアカウント名
+    channel_name = res.envelope.room || "anonymous" #このスクリプトを呼び出したSlackのChannel
+    
+    cap = spawn("bundle", ["exec", "cap", "#{stage}", "deploy#{command}"],{
+      cwd: "/home/hitochan/developer/kuma"
+    })
+    capOut = carrier.carry cap.stdout
+    capErr = carrier.carry cap.stderr
+
+    capOut.on 'line', (line) ->
+      res.send line
+
+    capErr.on 'line', (line) ->
+      res.send line
