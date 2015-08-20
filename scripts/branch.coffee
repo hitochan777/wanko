@@ -25,7 +25,10 @@ module.exports = (robot) ->
     url_api_base = "https://api.github.com"
 
   robot.respond /branch merge ([-_\.0-9a-zA-Z]+)(?:\/([-_\.a-zA-z0-9\/]+))? into ([-_\.a-zA-z0-9\/]+)(?: with ([-_\.a-zA-z0-9\/]+))?$/i, (res)->
-  
+    unless robot.auth.hasRole(res.envelope.user.name,'branch:merge')
+      res.reply "You don't have 'branch:merge' role"
+      return
+ 
     github.handleErrors (response) ->
       res.send "#{response.statusCode} #{response.error}... I sincerely apologize for this."
 
@@ -70,6 +73,9 @@ module.exports = (robot) ->
             res.send "tagged with #{tag}"
   
   robot.respond /branch delete ([-_\.0-9a-zA-Z]+)\/([-_\.a-zA-z0-9\/]+)$/i, (res)->
+    unless robot.auth.hasRole(res.envelope.user.name,'branch:delete')
+      res.reply "You don't have 'branch:delete' role"
+      return
     github.handleErrors (response) ->
       res.send "#{response.statusCode} #{response.error}... I sincerely apologize for this."
 

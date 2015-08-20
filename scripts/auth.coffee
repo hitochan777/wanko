@@ -12,7 +12,7 @@
 #   hubot who has <role> role - Find out who has the given role
 #
 # Notes:
-#   * Call the method: robot.auth.hasRole(res.envelopee.user,'<role>')
+#   * Call the method: robot.auth.hasRole(res.envelope.user.name,'<role>')
 #   * returns bool true or false
 #
 #   * the 'admin' role can only be assigned through the environment variable

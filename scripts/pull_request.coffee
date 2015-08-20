@@ -34,6 +34,9 @@ module.exports = (robot) ->
     yyyy + "." + mm + "." + dd
           
   robot.respond /(?:pr|pull request) send ([-_\.0-9a-zA-Z]+)(\/([-_\.a-zA-z0-9\/]+))? into ([-_\.a-zA-z0-9\/]+)$/i, (res)->
+    unless robot.auth.hasRole(res.envelope.user.name,'pr:send')
+      res.reply "You don't have 'pr:send' role"
+      return
     repo = res.match[1]
     head = res.match[3]
     base = res.match[4]
@@ -62,6 +65,9 @@ module.exports = (robot) ->
       res.send "Pull request has been made " + pull.html_url
 
   robot.respond /(?:pr|pull request) merge ([-_\.0-9a-zA-Z]+)(\/([-_\.a-zA-z0-9\/]+))? into ([-_\.a-zA-z0-9\/]+) (\d+)(?: with ([-_\.a-zA-z0-9\/]+))?$/i, (res)->
+    unless robot.auth.hasRole(res.envelope.user.name,'pr:merge')
+      res.reply "You don't have 'pr:merge' role"
+      return
     repo = res.match[1]
     head = res.match[3]
     base = res.match[4]

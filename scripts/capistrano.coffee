@@ -26,6 +26,10 @@ module.exports = (robot) ->
     return
 
   robot.respond /deploy to ([-_\.0-9a-zA-Z]+)\s*([-_\.0-9a-zA-Z]+)?$/i, (res)->
+    unless robot.auth.hasRole(res.envelope.user.name,'deploy')
+      res.reply "You don't have 'deploy' role"
+      return
+
     stage = res.match[1]
     command = res.match[2] || ""
     if command != ""
