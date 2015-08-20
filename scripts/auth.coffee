@@ -39,7 +39,10 @@ module.exports = (robot) ->
     isAdmin: (user) ->
       user in admins
 
-    hasRole: (user, roles) ->
+    hasRole: (name, roles) ->
+      if name in admins
+        return true
+      user = robot.brain.userForName(name)
       userRoles = @userRoles(user)
       if userRoles?
         roles = [roles] if typeof roles is 'string'
@@ -50,7 +53,7 @@ module.exports = (robot) ->
     usersWithRole: (role) ->
       users = []
       for own key, user of robot.brain.data.users
-        if @hasRole(user, role)
+        if @hasRole(user.name, role)
           users.push(user.name)
       users
 

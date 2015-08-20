@@ -1,11 +1,11 @@
-cription:
-#   merge pull requests in a Github repository
+# Description
+#   Deploy kuma using capistrano
+#
+# Configuration:
+#   APP_ROOT_DIR - rails root dir
 #
 # Dependencies:
 #   "githubot": "0.4.x"
-#
-# Configuration:
-#   APP_ROOT_DIR
 #
 # Commands:
 #   hubot deploy to :stage [:command] - deploy using capistrano
@@ -34,7 +34,6 @@ module.exports = (robot) ->
     command = res.match[2] || ""
     if command != ""
       command = ":"+command
-    res.send command+"hogege"
 
     account_name = res.envelope.user.name || "anonymous" #このスクリプトを呼び出した人のSlackアカウント名
     channel_name = res.envelope.room || "anonymous" #このスクリプトを呼び出したSlackのChannel
@@ -44,9 +43,8 @@ module.exports = (robot) ->
     })
 
     cap.on 'close', (code) ->
-      clearInterval timer ->
-        res.send "capistrano ended with exit code #{code}"
-        timer = null
+      clearInterval timer
+      timer = null
 
     capOut = carrier.carry cap.stdout
     capErr = carrier.carry cap.stderr
