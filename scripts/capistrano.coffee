@@ -1,4 +1,4 @@
-# Description:
+cription:
 #   merge pull requests in a Github repository
 #
 # Dependencies:
@@ -47,12 +47,14 @@ module.exports = (robot) ->
     capOut = carrier.carry cap.stdout
     capErr = carrier.carry cap.stderr
 
-    timer = setInterval() ->
-      res.send buffer.shift()
-      , SEND_INTERVAL
+    timer = setInterval () ->
+      if buffer.length > 0
+        res.send buffer.shift()
+    , SEND_INTERVAL
 
     capOut.on 'line', (line) ->
       buffer.push line
 
     capErr.on 'line', (line) ->
       buffer.push line
+
