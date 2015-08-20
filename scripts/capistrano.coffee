@@ -8,14 +8,18 @@
 #   APP_ROOT_DIR
 #
 # Commands:
-#   hubot deploy to <stage> <command> - deploy using capistrano
+#   hubot deploy to :stage [:command] - deploy using capistrano
 #
 # Author:
 #   hitochant777
 
+SEND_INTERVAL = 1500 # ms
+
 module.exports = (robot) ->
   spawn = require('child_process').spawn
   carrier = require('carrier')
+  buffer = []
+  timer = null
 
   unless process.env.APP_ROOT_DIR?
     console.log "You have to set APP_ROOT_DIR to env path!"
@@ -34,11 +38,21 @@ module.exports = (robot) ->
     cap = spawn("bundle", ["exec", "cap", "#{stage}", "deploy#{command}"],{
       cwd: process.env.APP_ROOT_DIR
     })
+
+    cap.on 'close', (code) ->
+      clearInterval timer ->
+        res.send "capistrano ended with exit code #{code}"
+        timer = null
+
     capOut = carrier.carry cap.stdout
     capErr = carrier.carry cap.stderr
 
+    timer = setInterval() ->
+      res.send buffer.shift()
+      , SEND_INTERVAL
+
     capOut.on 'line', (line) ->
-      res.send line
+      buffer.push line
 
     capErr.on 'line', (line) ->
-      res.send line
+      buffer.push line
