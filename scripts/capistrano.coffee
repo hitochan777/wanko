@@ -17,7 +17,7 @@ module.exports = (robot) ->
   spawn = require('child_process').spawn
   carrier = require('carrier')
 
-  if process.env.APP_ROOT_DIR?
+  unless process.env.APP_ROOT_DIR?
     console.log "You have to set APP_ROOT_DIR to env path!"
     return
 
