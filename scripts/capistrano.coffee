@@ -44,6 +44,7 @@ module.exports = (robot) ->
 
     cap.on 'close', (code) ->
       clearInterval timer
+      res.send "Capistrano ended with exit code #{code}"
       timer = null
 
     capOut = carrier.carry cap.stdout
