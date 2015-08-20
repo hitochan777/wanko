@@ -24,17 +24,6 @@ module.exports = (robot) ->
   unless (url_api_base = process.env.HUBOT_GITHUB_API)?
     url_api_base = "https://api.github.com"
 
-  _getDate = ->
-    theDate = new Date
-    yyyy = theDate.getFullYear()
-    mm = theDate.getMonth()+1 #January is 0!
-    if mm < 10
-      mm = "0" + mm
-    dd = theDate.getDate()
-    if dd < 10
-      dd = "0" + dd
-    yyyy + "." + mm + "." + dd
-
   robot.respond /branch merge ([-_\.0-9a-zA-Z]+)(?:\/([-_\.a-zA-z0-9\/]+))? into ([-_\.a-zA-z0-9\/]+)(?: with ([-_\.a-zA-z0-9\/]+))?$/i, (res)->
   
     github.handleErrors (response) ->

@@ -21,17 +21,6 @@ module.exports = (robot) ->
     console.log "You have to set APP_ROOT_DIR to env path!"
     return
 
-  _getDate = ->
-    theDate = new Date
-    yyyy = theDate.getFullYear()
-    mm = theDate.getMonth()+1 #January is 0!
-    if mm < 10
-      mm = "0" + mm
-    dd = theDate.getDate()
-    if dd < 10
-      dd = "0" + dd
-    yyyy + "." + mm + "." + dd
-          
   robot.respond /deploy to ([-_\.0-9a-zA-Z]+)\s*([-_\.0-9a-zA-Z]+)?$/i, (res)->
     stage = res.match[1]
     command = res.match[2] || ""
