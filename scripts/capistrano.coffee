@@ -26,6 +26,7 @@ module.exports = (robot) ->
   robot.respond /deploy to ([-_\.0-9a-zA-Z]+)\s*([-_\.0-9a-zA-Z]+)?$/i, (res)->
     buffer = []
     timer = null
+    ended = false
     unless robot.auth.hasRole(res.envelope.user.name,'deploy')
       res.reply "You don't have 'deploy' role"
       return
@@ -43,9 +44,8 @@ module.exports = (robot) ->
     })
 
     cap.on 'close', (code) ->
-      clearInterval timer
-      res.send "Capistrano ended with exit code #{code}"
-      timer = null
+      ended = true
+      buffer.push "Capistrano ended with exit code #{code}"
 
     capOut = carrier.carry cap.stdout
     capErr = carrier.carry cap.stderr
@@ -53,6 +53,9 @@ module.exports = (robot) ->
     timer = setInterval () ->
       if buffer.length > 0
         res.send buffer.shift()
+      else if eneded
+        clearInterval timer
+        timer = null
     , SEND_INTERVAL
 
     capOut.on 'line', (line) ->
