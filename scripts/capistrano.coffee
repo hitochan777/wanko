@@ -18,14 +18,14 @@ SEND_INTERVAL = 1500 # ms
 module.exports = (robot) ->
   spawn = require('child_process').spawn
   carrier = require('carrier')
-  buffer = []
-  timer = null
 
   unless process.env.APP_ROOT_DIR?
     console.log "You have to set APP_ROOT_DIR to env path!"
     return
 
   robot.respond /deploy to ([-_\.0-9a-zA-Z]+)\s*([-_\.0-9a-zA-Z]+)?$/i, (res)->
+    buffer = []
+    timer = null
     unless robot.auth.hasRole(res.envelope.user.name,'deploy')
       res.reply "You don't have 'deploy' role"
       return

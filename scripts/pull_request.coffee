@@ -10,7 +10,8 @@
 #   HUBOT_GITHUB_OWNER
 #
 # Commands:
-#   hubot [pr|pull request] [send|merge] <repo_name>/<head> into <base> - send pull request
+#   wanko [pr|pull request] send <repo_name>/<head> into <base> - send pull request
+#   wanko [[pr|pull request] merge <repo_name>/<head> into <base> - merge pull request
 #
 # Author:
 #   hitochant777
