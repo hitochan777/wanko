@@ -44,8 +44,13 @@ module.exports = (robot) ->
     })
 
     cap.on 'close', (code) ->
+      res.send "`Deploy has completed but I will show you the remaining log if any.`"
       ended = true
       buffer.push "Capistrano ended with exit code #{code}"
+      if code==0
+        buffer.push "`Deploy has succeeded!!`"
+      else code==1
+        buffer.push "`Deploy has failed`"
 
     capOut = carrier.carry cap.stdout
     capErr = carrier.carry cap.stderr
