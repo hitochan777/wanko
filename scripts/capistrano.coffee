@@ -53,7 +53,7 @@ module.exports = (robot) ->
     timer = setInterval () ->
       if buffer.length > 0
         res.send buffer.shift()
-      else if eneded
+      else if ended
         clearInterval timer
         timer = null
     , SEND_INTERVAL
