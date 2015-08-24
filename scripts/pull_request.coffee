@@ -43,7 +43,7 @@ module.exports = (robot) ->
     head = res.match[3]
     base = res.match[4]
     title = res.match[5] or "#{_getDate()} pull request by #{account_name}"
-    desc = res.match[6] or """
+    body = res.match[6] or """
       ・Created By #{account_name} on #{channel_name} Channel
       ・Circle CI build status can be shown: #{circleCIUrl}
     """
