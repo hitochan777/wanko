@@ -49,7 +49,7 @@ module.exports = (robot) ->
       buffer.push "Capistrano ended with exit code #{code}"
       if code==0
         buffer.push "`Deploy has succeeded!!`"
-      else code==1
+      else
         buffer.push "`Deploy has failed`"
 
     capOut = carrier.carry cap.stdout
