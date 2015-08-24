@@ -34,26 +34,24 @@ module.exports = (robot) ->
       dd = "0" + dd
     yyyy + "." + mm + "." + dd
           
-  robot.respond /(?:pr|pull request) send ([-_\.0-9a-zA-Z]+)(\/([-_\.a-zA-z0-9\/]+))? into ([-_\.a-zA-z0-9\/]+)$/i, (res)->
+  robot.respond /(?:pr|pull request) send ([-_\.0-9a-zA-Z]+)(\/([-_\.a-zA-z0-9\/]+))? into ([-_\.a-zA-z0-9\/]+)\ntitle: (.+)\ndesc: (.+)$/i, (res)->
     unless robot.auth.hasRole(res.envelope.user.name,'pr:send')
       res.reply "You don't have 'pr:send' role"
       return
+    circleCIUrl = "https://circleci.com/gh/#{owner}/#{repo}/tree/#{encodeURIComponent(base)}" #CircleCIのURL
     repo = res.match[1]
     head = res.match[3]
     base = res.match[4]
-    
+    title = res.match[5] or "#{_getDate()} pull request by #{account_name}"
+    desc = res.match[6] or """
+      ・Created By #{account_name} on #{channel_name} Channel
+      ・Circle CI build status can be shown: #{circleCIUrl}
+    """
+
     url = "#{url_api_base}/repos/#{owner}/#{repo}/pulls" #GitHubAPIのURL
     
     account_name = res.envelope.user.name || "anonymous" #このスクリプトを呼び出した人のSlackアカウント名
     channel_name = res.envelope.room || "anonymous" #このスクリプトを呼び出したSlackのChannel
-    
-    title = "#{_getDate()} pull request by #{account_name}"
-    circleCIUrl = "https://circleci.com/gh/#{owner}/#{repo}/tree/#{encodeURIComponent(base)}" #CircleCIのURL
-    
-    body = """
-      ・Created By #{account_name} on #{channel_name} Channel
-      ・Circle CI build status can be shown: #{circleCIUrl}
-    """
     
     data = {
       "title": title
